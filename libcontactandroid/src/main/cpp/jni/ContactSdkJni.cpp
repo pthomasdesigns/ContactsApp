@@ -11,21 +11,22 @@
 
 static const char* kTAG = "ContactSdkJni";
 
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nativeInit (JNIEnv *env, jclass, jobject sdk) {
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_nativeInitInternal
+        (JNIEnv *env, jclass, jobject sdk) {
 
     ContactJni::initialize(env, sdk);
     UpdateContactListenerJni::initialize(env, sdk);
     LOGI(kTAG, "Native initialization complete");
 }
 
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nativeShutdown
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_nativeShutdownInternal
         (JNIEnv *env, jclass) {
     ContactJni::shutdown(env);
     UpdateContactListenerJni::shutdown(env);
     LOGI(kTAG, "Native shutdown complete");
 }
 
-JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_addContactInternal
+JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_addContactInternal
         (JNIEnv *env, jclass contactSdk, jstring firstName, jstring lastName, jstring phoneNumber) {
 
     Contact contact = ContactJni::java2cpp(env, firstName, lastName, phoneNumber);
@@ -37,7 +38,7 @@ JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_addC
     }
 }
 
-JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_getAllContactsInternal
+JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_getAllContactsInternal
         (JNIEnv *env, jclass) {
 
     std::vector<Contact> clist = ContactSdk::getAllContacts();
@@ -45,7 +46,7 @@ JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_g
     return jlist;
 }
 
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_setUpdateContactListenerInternal
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_setUpdateContactListenerInternal
         (JNIEnv *env, jclass, jobject listener) {
 
     UpdateContactListenerJni::java2cpp(env, listener);

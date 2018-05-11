@@ -11,40 +11,46 @@ import android.util.Log;
 
 public class ContactSdk {
 
-    private Handler bgHandler;
+    private static Handler bgHandler;
     private static HandlerThread bgThread;
     private static Handler uiHandler;
     private static UpdateContactListener ucListener;
     private static ContactSdk instance = null;
+    private static NativeInterface nativeInterface;
 
     private static int SUCCESS = 1;
     private static int FAILURE = 0;
-    private static String TAG = "ContactSdk";
+    private static final String TAG = "ContactSdk";
+    private static final String LIBRARY_NAME = "android-contact-sdk";
 
     private ContactSdk() {
-
-        System.loadLibrary("android-contact-sdk");
-        bgThread = new HandlerThread("ContackSdk-Background-Thread");
-        bgThread.start();
-        bgHandler = new Handler(bgThread.getLooper());
-        uiHandler = new Handler(Looper.getMainLooper());
     }
 
-    public static ContactSdk initialize() {
+    public static ContactSdk initialize(NativeInterface nativeInterface) {
         if (instance == null) {
             synchronized (ContactSdk.class) {
                 if (instance == null) {
                     instance = new ContactSdk();
-                    nativeInit(instance);
+                    ContactSdk.nativeInterface = nativeInterface;
+                    ContactSdk.nativeInterface.loadLibrary(LIBRARY_NAME);
+                    createHandlers();
+                    ContactSdk.nativeInterface.nativeInit(instance);
                 }
             }
         }
         return instance;
     }
 
+    private static void createHandlers() {
+        bgThread = new HandlerThread("ContackSdk-Background-Thread");
+        bgThread.start();
+        bgHandler = new Handler(bgThread.getLooper());
+        uiHandler = new Handler(Looper.getMainLooper());
+    }
+
     public void shutdown() {
         bgThread.quit();
-        nativeShutdown();
+        nativeInterface.nativeShutdown();
     }
 
     public interface AddContactListener {
@@ -63,7 +69,7 @@ public class ContactSdk {
         bgHandler.post(new Runnable() {
             @Override
             public void run() {
-                final List<Contact> contacts = getAllContactsInternal();
+                final List<Contact> contacts = nativeInterface.getAllContacts();
                 if (listener != null) {
                     uiHandler.post(new Runnable() {
                         @Override
@@ -80,7 +86,7 @@ public class ContactSdk {
         bgHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (addContactInternal(contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber()) == SUCCESS) {
+                if (nativeInterface.addContact(contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber()) == SUCCESS) {
                     if (listener != null) {
                         uiHandler.post(new Runnable() {
                             @Override
@@ -98,7 +104,7 @@ public class ContactSdk {
 
     public void setUpdateContactListener(UpdateContactListener listener) {
         ucListener = listener;
-        setUpdateContactListenerInternal(this);
+        nativeInterface.setUpdateContactListener(this);
     }
 
     public static void onContactUpdated(final Contact oldContact, final Contact newContact) {
@@ -111,11 +117,4 @@ public class ContactSdk {
             });
         }
     }
-
-    // native methods
-    private static native void nativeInit(ContactSdk sdk);
-    private static native void nativeShutdown();
-    private static native List<Contact> getAllContactsInternal();
-    private static native int addContactInternal(String firstName, String lastName, String phoneNumber);
-    private static native void setUpdateContactListenerInternal(ContactSdk sdk);
 }

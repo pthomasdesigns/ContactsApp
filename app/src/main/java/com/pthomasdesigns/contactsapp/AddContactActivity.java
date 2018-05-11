@@ -24,7 +24,7 @@ public class AddContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-        sdk = ContactSdk.initialize();
+        sdk = ((ContactsApp)getApplicationContext()).getContactSdk();
 
         tiFirstName = (TextInputEditText) findViewById(R.id.first_name);
         tiLastName = (TextInputEditText) findViewById(R.id.last_name);

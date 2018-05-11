@@ -25,7 +25,7 @@ extern "C" {
  * Method:    nativeInit
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nativeInit
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_nativeInitInternal
         (JNIEnv *, jclass, jobject);
 
 /*
@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nati
  * Method:    nativeShutdown
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nativeShutdown
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_nativeShutdownInternal
         (JNIEnv *, jclass);
 
 
@@ -42,7 +42,7 @@ JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_nati
  * Method:    addContact
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/pthomasdesigns/libcontactandroid/ContactSdk/AddContactListener;)V
  */
-JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_addContactInternal
+JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_addContactInternal
         (JNIEnv *, jclass, jstring, jstring, jstring);
 
 /*
@@ -50,7 +50,7 @@ JNIEXPORT jint JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_addC
  * Method:    getAllContacts
  * Signature: ()Ljava/util/List;
  */
-JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_getAllContactsInternal
+JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_getAllContactsInternal
         (JNIEnv *, jclass);
 
 /*
@@ -58,7 +58,7 @@ JNIEXPORT jobject JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_g
  * Method:    setUpdateContactListenerInternal
  * Signature: (Lcom/pthomasdesigns/libcontactandroid/ContactSdk/UpdateContactListener;)V
  */
-JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_ContactSdk_setUpdateContactListenerInternal
+JNIEXPORT void JNICALL Java_com_pthomasdesigns_libcontactandroid_NativeInterfaceImpl_setUpdateContactListenerInternal
         (JNIEnv *, jclass, jobject);
 
 
