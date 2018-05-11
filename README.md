@@ -8,7 +8,7 @@ This project has 3 parts
   The SDK API source code is in ContactsApp/libcontactandroid/src/main/java/com/pthomasdesigns/libcontactandroid/
 3. A sample Android app that shows the usage of the SDK APIs. 
   The source code is in ContactsApp/app/src/main/java/com/pthomasdesigns/contactsapp/
-  
+## Contact SDK
 The SDK has the following APIs
 ```java
 public class ContactSdk {
