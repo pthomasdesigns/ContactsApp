@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        contactSdk = ContactSdk.initialize();
 
+        contactSdk = ((ContactsApp)getApplicationContext()).getContactSdk();
         contactsView = (RecyclerView) findViewById(R.id.recycle_view_contacts);
         contactsAdapter = new ContactsAdapter();
         contactsView.setAdapter(contactsAdapter);
@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        contactSdk.shutdown();
     }
 
     public void setRecyclerViewLayoutManager() {

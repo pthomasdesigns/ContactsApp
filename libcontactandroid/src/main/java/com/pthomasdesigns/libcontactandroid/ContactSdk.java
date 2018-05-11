@@ -35,14 +35,15 @@ public class ContactSdk {
             synchronized (ContactSdk.class) {
                 if (instance == null) {
                     instance = new ContactSdk();
+                    nativeInit(instance);
                 }
             }
         }
-        nativeInit(instance);
         return instance;
     }
 
     public void shutdown() {
+        bgThread.quit();
         nativeShutdown();
     }
 
